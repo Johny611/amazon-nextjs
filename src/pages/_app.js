@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { store } from "../app/store";
+import { store } from "../app/store.js";
 import "../styles/globals.css";
 import { SessionProvider as AuthProvider } from "next-auth/react";
 

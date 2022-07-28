@@ -2,7 +2,7 @@ import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-import { addToBasket, removeFromBasket } from "../slices/basketSlice";
+import { addToBasket, removeFromBasket } from "../slices/basketSlice.js";
 
 const CheckoutProduct = ({
   id,

@@ -1,7 +1,7 @@
-import Header from "../components/Header";
+import Header from "../components/Header.js";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import CheckoutProduct from "../components/CheckoutProduct";
+import CheckoutProduct from "../components/CheckoutProduct.js";
 import { useSession } from "next-auth/react";
 import Currency from "react-currency-formatter";
 import { loadStripe } from "@stripe/stripe-js";
