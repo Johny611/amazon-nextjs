@@ -1,8 +1,10 @@
 import { buffer } from "micro";
 import * as admin from "firebase-admin";
+import serviceAccount from "../../../permissions.json";
+import stripe from "stripe";
 
 // Secure a connection to firebase from the backend
-const serviceAccount = require("../../../serviceAccountKey.json");
+
 const app = !admin.apps.length
   ? admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
@@ -10,7 +12,7 @@ const app = !admin.apps.length
   : admin.app();
 
 // Establish connection to stripe
-const stripe = require("require")(process.env.STRIPE_SECRET_KEY);
+const Stripe = stripe(process.env.STRIPE_SECRET_KEY);
 
 const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
 
@@ -44,7 +46,7 @@ export default async (req, res) => {
 
     // Verify that the event posted came from Stripe
     try {
-      event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+      event = Stripe.webhooks.constructEvent(payload, sig, endpointSecret);
     } catch (error) {
       console.log("ERROR", error.message);
       return res.status(400).send(`Webhook Error: ${error.message}`);
