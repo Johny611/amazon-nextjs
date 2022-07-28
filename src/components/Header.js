@@ -13,6 +13,15 @@ const Header = () => {
   const router = useRouter();
   const items = useSelector((state) => state.basket.items);
 
+  const handleAuth = (e) => {
+    e.preventDefault();
+    if (!session) {
+      signIn();
+    } else {
+      signOut();
+    }
+  };
+
   return (
     <header>
       {/* Top nav */}
@@ -39,11 +48,11 @@ const Header = () => {
 
         {/* Right */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-          <div onClick={!session ? signIn : signOut} className="link">
+          <div onClick={handleAuth} className="link">
             <p>{session ? `Hello, ${session.user.name}` : `Sign In`}</p>
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
-          <div className="link">
+          <div onClick={() => router.push("/orders")} className="link">
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
