@@ -4,6 +4,7 @@ import db from "../../firebase.js";
 import moment from "moment";
 import Order from "../components/Order.js";
 import Stripe from "stripe";
+import { collection, getDocs, orderBy } from "firebase/firestore";
 
 const Orders = ({ orders }) => {
   const { session } = useSession();
@@ -57,16 +58,25 @@ export async function getServerSideProps(context) {
   }
 
   // firebase db
-  const stripeOrders = db
-    .collection("users")
-    .doc(session.user.email)
-    .collection("orders")
-    .orderBy("timestamp", "desc")
-    .get();
+  // const stripeOrders = db
+  //   .collection("users")
+  //   .doc(session.user.email)
+  //   .collection("orders")
+  //   .orderBy("timestamp", "desc")
+  //   .get();
+
+  const stripeOrders = collection(
+    db,
+    "users",
+    session.user.email,
+    "orders",
+    orderBy("timestamp", "desc")
+  );
+  const querySnapshot = await getDocs(stripeOrders);
 
   // stripe orders
   const orders = await Promise.all(
-    stripeOrders.docs.map(async (order) => ({
+    querySnapshot.docs.map(async (order) => ({
       id: order.id,
       amount: order.data().amount,
       amountShipping: order.data().amount_shipping,
