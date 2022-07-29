@@ -3,6 +3,7 @@ import Header from "../components/Header.js";
 import db from "../../firebase.js";
 import moment from "moment";
 import Order from "../components/Order.js";
+import Stripe from "stripe";
 
 const Orders = ({ orders }) => {
   const { session } = useSession();
@@ -44,7 +45,7 @@ const Orders = ({ orders }) => {
 export default Orders;
 
 export async function getServerSideProps(context) {
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
   // get the users logged in credentials
   const session = await getSession(context);
